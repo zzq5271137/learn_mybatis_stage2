@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- properties: 定义属性以及读取属性文件 -->
+    <properties resource="db.properties"/>
+
+    <!-- settings: 用于调整设置, 它们会改变Mybatis的运行时行为 -->
+    <settings>
+        <!-- 配置sql的打印 -->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!-- typeAliases: 配置类型别名(类型别名是为Java类型设置一个短的名字) -->
+    <typeAliases>
+        <!-- 定义单个别名 -->
+        <!-- <typeAlias type="com.mycomp.mybatis.domain.Customer" alias="Customer"/> -->
+
+        <!-- 批量定义别名(给某一个包定义别名, 其中的类在使用的时候只需要写类名) -->
+        <!-- 如果此包下有子包, 并且多个子包中有名字相同的类, 需要在那些类中加上注解@Alias("MyClass1") -->
+        <package name="com.mycomp.mybatis.domain"/>
+    </typeAliases>
+
+    <!-- 类型处理器(很少使用) -->
+    <typeHandlers/>
+
+    <!-- environments: 环境配置, 可以去定义多种环境(开发、测试、生产等环境) -->
+    <!-- spring整合后, environments配置将废除, 将使用spring中的连接池 -->
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用jdbc事务管理 -->
+            <transactionManager type="JDBC"/>
+            <!-- 数据库连接池 -->
+            <dataSource type="POOLED">
+                <!-- 从属性文件中读取参数 -->
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- databaseIdProvider: Mybatis可以根据不同的数据库厂商执行不同的语句, 通过databaseIdProvider标签进行设置 -->
+    <databaseIdProvider type="DB_VENDOR">
+        <!-- 配置了这些之后, 可以在使用sql语句的时候用databaseId标注 -->
+        <property name="MySQL" value="mysql"/>
+        <property name="DB2" value="db2"/>
+        <property name="Oracle" value="oracle"/>
+        <property name="SQL Server" value="sqlserver"/>
+    </databaseIdProvider>
+
+    <!-- mappers: 加载映射文件 -->
+    <mappers>
+        <!-- 使用加载资源文件的方式 -->
+        <mapper resource="Customer.xml"/>
+
+        <!--
+            也可以使用直接加载你的mapper接口的方式;
+            但是, 是有条件的:
+            1. 映射文件的名称必须和接口名称一致(所以这里的Customer.xml就得改成ICustomerMapper.xml);
+            2. 映射文件必须得要和接口在同一目录下;
+        -->
+        <!-- <mapper class="com.mycomp.mybatis.mapper.ICustomerMapper"/> -->
+
+        <!-- 使用package配置, 使用的前提也是上面那两条规定 -->
+        <!-- <package name="com.mycomp.mybatis.mapper"/> -->
+    </mappers>
+
+</configuration>

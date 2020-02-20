@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycomp.mybatis.mapper.ICustomerMapper">
+    <!--
+        参数问题:
+        如果是多个参数, 可以省略parameterType;
+        多个参数时, 参数名必须是param1、param2...或者arg0、arg1...;
+
+        @Param注解标注参数:
+        如果想自己起名字, 必须在自己定义的mapper接口里使用@Param注解标注参数, 详见ICustomerMapper.java
+        如果使用@Param标注了参数, 这里的参数名可以使用注解标注的名称, 也可以使用param1、param2...(但不能使用arg0、arg1...);
+
+        Map参数:
+        如果在自己定义的mapper接口里使用Map接收参数, 这里就必须使用Map里面的key值(id、name, 详见MyTest.java中的test2())
+
+        POJO参数:
+        如果在自己定义的mapper接口里使用POJO接收参数, 这里就必须使用POJO类里的字段名(cust_id, cust_name)
+    -->
+    <!-- 根据id查询用户 -->
+    <select id="getCustomerById" resultType="Customer" databaseId="mysql">
+        SELECT *
+        FROM `customer`
+        <!-- WHERE cust_id = #{param1} AND cust_name = #{param2} -->
+        <!-- WHERE cust_id = #{id} AND cust_name = #{name} -->
+        WHERE cust_id = #{cust_id} AND cust_name = #{cust_name}
+    </select>
+
+</mapper>
