@@ -5,6 +5,10 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
+/*
+ * 参数相关
+ */
+
 public interface ICustomerMapper {
 
     /*
